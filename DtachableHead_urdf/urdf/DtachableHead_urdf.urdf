@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="DtachableHead_urdf">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.000160763379547333 -0.0028778608375346 0.0413095409157996"
+        rpy="0 0 0" />
+      <mass
+        value="1.35645615501944" />
+      <inertia
+        ixx="0.00160679424866847"
+        ixy="-1.96133222815189E-08"
+        ixz="-4.28172380283089E-11"
+        iyy="0.00256871988358894"
+        iyz="2.47783545305456E-05"
+        izz="0.00323989902972532" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.992156862745098 0.996078431372549 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="link1">
+    <inertial>
+      <origin
+        xyz="-0.0344919141503805 -1.54366087967706E-09 -0.00292123191401799"
+        rpy="0 0 0" />
+      <mass
+        value="0.0671568678454526" />
+      <inertia
+        ixx="1.39601406216235E-05"
+        ixy="2.61151902536575E-12"
+        ixz="5.0558028175513E-07"
+        iyy="1.84505744884279E-05"
+        iyz="-2.64774176024666E-12"
+        izz="9.66500461012691E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.992156862745098 0.996078431372549 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint1"
+    type="continuous">
+    <origin
+      xyz="-0.0360499999999949 0.0499999999999997 0.0900000000000024"
+      rpy="1.5707963267949 0 -1.5707963267949" />
+    <parent
+      link="base_link" />
+    <child
+      link="link1" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="link2">
+    <inertial>
+      <origin
+        xyz="0.00998208521241244 0.0286104199594805 -0.0273197453173963"
+        rpy="0 0 0" />
+      <mass
+        value="0.0356098993432724" />
+      <inertia
+        ixx="1.83783160193877E-05"
+        ixy="9.28623788854822E-09"
+        ixz="5.1441858537897E-11"
+        iyy="4.62727883326016E-06"
+        iyz="1.53864127815959E-08"
+        izz="2.05218091451025E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.63921568627451 0.717647058823529 0.807843137254902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint2"
+    type="continuous">
+    <origin
+      xyz="-0.0400000000000002 0 -0.0390000000000001"
+      rpy="0 1.5707963267949 0" />
+    <parent
+      link="link1" />
+    <child
+      link="link2" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="link3">
+    <inertial>
+      <origin
+        xyz="-0.0166445970887166 -0.0152591349151164 0.0960402777899793"
+        rpy="0 0 0" />
+      <mass
+        value="0.0615999483609297" />
+      <inertia
+        ixx="1.96808644650992E-05"
+        ixy="-7.73160709142128E-10"
+        ixz="2.07413985495361E-09"
+        iyy="1.1984164460371E-05"
+        iyz="5.20730103700111E-07"
+        izz="1.99107629303824E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.749019607843137 0.749019607843137 0.749019607843137 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint3"
+    type="prismatic">
+    <origin
+      xyz="0.0177 0.048825 -0.027931"
+      rpy="-1.5708 0 0" />
+    <parent
+      link="link2" />
+    <child
+      link="link3" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="0"
+      upper="0.1"
+      effort="0"
+      velocity="0" />
+  </joint>
+  <link
+    name="link4">
+    <inertial>
+      <origin
+        xyz="0.000935720391849856 3.82530565196104E-07 0.0269255378944657"
+        rpy="0 0 0" />
+      <mass
+        value="0.0459058932133953" />
+      <inertia
+        ixx="1.01806974090115E-05"
+        ixy="2.05369267526458E-09"
+        ixz="1.9075989053661E-07"
+        iyy="1.19651025527216E-05"
+        iyz="-8.78872520108583E-10"
+        izz="6.93671043075208E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.749019607843137 0.749019607843137 0.749019607843137 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint4"
+    type="continuous">
+    <origin
+      xyz="-0.017355 -0.0040276 0.12394"
+      rpy="0 0 0" />
+    <parent
+      link="link3" />
+    <child
+      link="link4" />
+    <axis
+      xyz="0 0 -1" />
+  </joint>
+  <link
+    name="link5">
+    <inertial>
+      <origin
+        xyz="0.000807779287032059 0.0477382509072259 -0.021000330251694"
+        rpy="0 0 0" />
+      <mass
+        value="0.0531974022503482" />
+      <inertia
+        ixx="1.34162982657178E-05"
+        ixy="1.90602862465922E-07"
+        ixz="-2.05357289078785E-09"
+        iyy="9.8133212386681E-06"
+        iyz="8.78912371983287E-10"
+        izz="1.31909439260168E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.749019607843137 0.749019607843137 0.749019607843137 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint5"
+    type="continuous">
+    <origin
+      xyz="0.0209400000000001 0 0.0414999999999974"
+      rpy="1.5707963267949 0 1.5707963267949" />
+    <parent
+      link="link4" />
+    <child
+      link="link5" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+  <link
+    name="link6">
+    <inertial>
+      <origin
+        xyz="0.0012937603422366 0.00143049571285381 0.0122874973879902"
+        rpy="0 0 0" />
+      <mass
+        value="0.0815114383015727" />
+      <inertia
+        ixx="8.6125557920118E-06"
+        ixy="-5.42382835388739E-09"
+        ixz="-1.34323836661227E-06"
+        iyy="0.000107416004552211"
+        iyz="-3.71193090190525E-07"
+        izz="0.000107522902425227" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.917647058823529 0.917647058823529 0.917647058823529 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://DtachableHead_urdf/meshes/link6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Joint6"
+    type="continuous">
+    <origin
+      xyz="0.0209399999999999 0.0675000000000001 -0.0210000000000012"
+      rpy="0 -1.5707963267949 0" />
+    <parent
+      link="link5" />
+    <child
+      link="link6" />
+    <axis
+      xyz="0 0 1" />
+  </joint>
+</robot>
