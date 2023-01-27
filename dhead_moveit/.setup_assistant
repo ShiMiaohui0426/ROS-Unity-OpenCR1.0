@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: DtachableHead_urdf
+    relative_path: urdf/DtachableHead_urdf.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/DtachableHead_urdf.srdf
+  CONFIG:
+    author_name: SHI MIAOHUI
+    author_email: shimiaohui.cn@gmail.com
+    generated_timestamp: 1674809878

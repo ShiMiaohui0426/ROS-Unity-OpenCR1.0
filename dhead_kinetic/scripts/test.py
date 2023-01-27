@@ -70,7 +70,7 @@ class dhead_kinetic():
         joint_goal[2] = 0
         joint_goal[3] =0
         joint_goal[4] = 0
-        joint_goal[5] = pi/2
+        joint_goal[5] = 0
         
         move_group.go(joint_goal, wait=True)
         move_group.stop()

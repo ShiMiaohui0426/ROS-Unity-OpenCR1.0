@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot name="DtachableHead_urdf">
+    <link name="base_link">
+        <inertial>
+            <origin xyz="-0.000160763379547334 -0.0028778608375346 0.0413095409157996" rpy="0 0 0" />
+            <mass value="1.35645615501944" />
+            <inertia ixx="0.00160679424866847" ixy="-1.96133222815202E-08" ixz="-4.28172380236372E-11" iyy="0.00256871988358894" iyz="2.47783545305456E-05" izz="0.00323989902972532" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/base_link.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.992156862745098 0.996078431372549 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/base_link.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <link name="link1">
+        <inertial>
+            <origin xyz="-0.0344919141503805 -1.54366087967706E-09 -0.00292123191401799" rpy="0 0 0" />
+            <mass value="0.0671568678454526" />
+            <inertia ixx="1.39601406216235E-05" ixy="2.61151902538547E-12" ixz="5.05580281755129E-07" iyy="1.84505744884279E-05" iyz="-2.64774176017856E-12" izz="9.66500461012691E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link1.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.992156862745098 0.996078431372549 1 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link1.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Joint1" type="continuous">
+        <origin xyz="-0.0360499999999949 0.0499999999999997 0.0900000000000024" rpy="1.5707963267949 0 -1.5707963267949" />
+        <parent link="base_link" />
+        <child link="link1" />
+        <axis xyz="0 0 -1" />
+    </joint>
+    <link name="link2">
+        <inertial>
+            <origin xyz="0.00998208521241245 0.0286104199594805 -0.0273197453173963" rpy="0 0 0" />
+            <mass value="0.0356098993432724" />
+            <inertia ixx="1.83783160193877E-05" ixy="9.28623788854822E-09" ixz="5.14418585378673E-11" iyy="4.62727883326016E-06" iyz="1.5386412781596E-08" izz="2.05218091451025E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link2.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.63921568627451 0.717647058823529 0.807843137254902 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link2.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Joint2" type="continuous">
+        <origin xyz="-0.04 0 -0.039" rpy="0 1.5708 0" />
+        <parent link="link1" />
+        <child link="link2" />
+        <axis xyz="0 0 -1" />
+    </joint>
+    <link name="link3">
+        <inertial>
+            <origin xyz="-0.0166445970887167 -0.0152591349151164 0.0960402777899791" rpy="0 0 0" />
+            <mass value="0.0615999483609297" />
+            <inertia ixx="1.96808644650992E-05" ixy="-7.73160709144607E-10" ixz="2.07413985495107E-09" iyy="1.1984164460371E-05" iyz="5.20730103700112E-07" izz="1.99107629303824E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link3.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.749019607843137 0.749019607843137 0.749019607843137 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link3.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Joint3" type="prismatic">
+        <origin xyz="0.0177 0.048825 -0.027931" rpy="-1.5708 0 0" />
+        <parent link="link2" />
+        <child link="link3" />
+        <axis xyz="0 0 1" />
+        <limit lower="0" upper="0.1" effort="0" velocity="0" />
+    </joint>
+    <link name="link4">
+        <inertial>
+            <origin xyz="0.000935720391849824 3.82530565168349E-07 0.0269255378944656" rpy="0 0 0" />
+            <mass value="0.0459058932133952" />
+            <inertia ixx="1.01806974090115E-05" ixy="2.05369267526503E-09" ixz="1.90759890536628E-07" iyy="1.19651025527216E-05" iyz="-8.78872520126507E-10" izz="6.93671043075207E-06" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link4.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.749019607843137 0.749019607843137 0.749019607843137 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link4.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Joint4" type="continuous">
+        <origin xyz="-0.017355 -0.0040276 0.12394" rpy="0 0 0" />
+        <parent link="link3" />
+        <child link="link4" />
+        <axis xyz="0 0 -1" />
+    </joint>
+    <link name="link5">
+        <inertial>
+            <origin xyz="0.000807779287032073 0.0477382509072259 -0.0210003302516941" rpy="0 0 0" />
+            <mass value="0.0531974022503484" />
+            <inertia ixx="1.34162982657178E-05" ixy="1.90602862465882E-07" ixz="-2.05357289078372E-09" iyy="9.81332123866811E-06" iyz="8.78912371964546E-10" izz="1.31909439260169E-05" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link5.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.749019607843137 0.749019607843137 0.749019607843137 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link5.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Joint5" type="continuous">
+        <origin xyz="0.02094 0 0.0415" rpy="1.5708 0 1.5708" />
+        <parent link="link4" />
+        <child link="link5" />
+        <axis xyz="0 0 1" />
+    </joint>
+    <link name="link6">
+        <inertial>
+            <origin xyz="-0.00129376034223654 -0.00143049571285392 0.0122874973879902" rpy="0 0 0" />
+            <mass value="0.0815114383015727" />
+            <inertia ixx="8.61255579201181E-06" ixy="-5.42382835388954E-09" ixz="1.34323836661227E-06" iyy="0.000107416004552211" iyz="3.71193090190524E-07" izz="0.000107522902425226" />
+        </inertial>
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link6.STL" />
+            </geometry>
+            <material name="">
+                <color rgba="0.917647058823529 0.917647058823529 0.917647058823529 1" />
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="package://DtachableHead_urdf/meshes/link6.STL" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="Joint6" type="continuous">
+        <origin xyz="0.0209399999999999 0.0675000000000001 -0.0210000000000012" rpy="0 1.5707963267949 0" />
+        <parent link="link5" />
+        <child link="link6" />
+        <axis xyz="0 0 1" />
+    </joint>
+    <transmission name="trans_Joint1">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Joint1">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Joint1_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_Joint2">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Joint2">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Joint2_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_Joint3">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Joint3">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Joint3_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_Joint4">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Joint4">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Joint4_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_Joint5">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Joint5">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Joint5_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <transmission name="trans_Joint6">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="Joint6">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="Joint6_motor">
+            <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            <mechanicalReduction>1</mechanicalReduction>
+        </actuator>
+    </transmission>
+    <gazebo>
+        <plugin name="gazebo_ros_control">
+            <robotNamespace>/</robotNamespace>
+        </plugin>
+    </gazebo>
+</robot>
+
