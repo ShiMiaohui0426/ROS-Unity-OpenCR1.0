@@ -66,10 +66,12 @@ class dhead_kinetic():
         print(wpose)
         joint_goal = move_group.get_current_joint_values()
         joint_goal[0] = 0
-        joint_goal[1] = pi / 1
+        joint_goal[1] = 0
         joint_goal[2] = 0
-        joint_goal[3] = pi / 4
+        joint_goal[3] =0
         joint_goal[4] = 0
+        joint_goal[5] = pi/2
+        
         move_group.go(joint_goal, wait=True)
         move_group.stop()
         wpose = move_group.get_current_pose().pose
