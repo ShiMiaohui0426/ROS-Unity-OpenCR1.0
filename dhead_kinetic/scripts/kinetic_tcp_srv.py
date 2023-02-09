@@ -1,14 +1,15 @@
+#!/usr/bin/env python
 import socket
 import queue
 import json
 import threading
 
 
-class kinect_server():
+class kinect_tcp_server():
 
-    def __init__(self):
-        self.host = '192.168.3.7'  # 主机IP
-        self.port = 8080
+    def __init__(self,host='127.0.0.1',port=8080):
+        self.host = host  # 主机IP
+        self.port = port
         # 端口
         self.web = socket.socket()  # 创建TCP/IP套接字
         self.web.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
@@ -38,12 +39,12 @@ class kinect_server():
 
         self.conn.close()  # 关闭连接
 
-    def send_joints(self,joints):
+    def send_pose(self,pose):
         data = {
-            'position': {'x': joints[0], 'y': joints[1], 'z': joints[2]
+            'position': {'x': pose[0], 'y': pose[1], 'z': pose[2]
 
             },
-            'orentation': {'x': joints[3], 'y': joints[4], 'z': joints[5], 'w': joints[6]}
+            'orentation': {'x': pose[3], 'y': pose[4], 'z': pose[5], 'w': pose[6]}
         }
         str_json = json.dumps(data)
         byte_json=str_json.encode()
@@ -59,7 +60,7 @@ class kinect_server():
 
 
 if __name__ == "__main__":
-    srv = kinect_server()
+    srv = kinect_tcp_server()
     srv.wait_connect()
     i=0
     while i < 5:
