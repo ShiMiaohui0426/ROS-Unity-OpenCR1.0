@@ -5,7 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1
-        - /MotionPlanning1/Planning Metrics1
+        - /MotionPlanning1/Planned Path1
       Splitter Ratio: 0.5
     Tree Height: 199
   - Class: rviz/Help
@@ -110,12 +110,12 @@ Visualization Manager:
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
         Show Robot Collision: false
-        Show Robot Visual: true
+        Show Robot Visual: false
         Show Trail: false
         State Display Time: 0.05 s
         Trail Step Size: 1
         Trajectory Topic: move_group/display_planned_path
-        Use Sim Time: false
+        Use Sim Time: true
       Planning Metrics:
         Payload: 1
         Show Joint Torques: false
@@ -244,5 +244,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1291
-  X: 70
-  Y: 0
+  X: 68
+  Y: -23

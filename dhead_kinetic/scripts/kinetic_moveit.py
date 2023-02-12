@@ -42,7 +42,7 @@ class dhead_kinetic():
             moveit_msgs.msg.DisplayTrajectory,
             queue_size=20,
         )
-        dhead_subscriber = rospy.subscriber("/head_command", Float32MultiArray, self.dhead_info)
+
         # We can get the name of the reference frame for this robot:
         planning_frame = move_group.get_planning_frame()
         # print("============ Planning frame: %s" % planning_frame)
@@ -64,7 +64,7 @@ class dhead_kinetic():
         self.scene = scene
         self.move_group = move_group
         self.display_trajectory_publisher = display_trajectory_publisher
-        self.dhead_subscriber = dhead_subscriber
+
         self.planning_frame = planning_frame
         self.group_names = group_names
         move_group.set_max_acceleration_scaling_factor(1)
@@ -97,21 +97,34 @@ class dhead_kinetic():
         self.tfpub = tfpub
         self.tfbuffer = tf2_ros.Buffer()  # 创建缓存对象
 
-        tfsub = tf2_ros.TransformListener(self.tfbuffer)  # 创建订阅对象，将缓存传入
+        self.tfsub = tf2_ros.TransformListener(self.tfbuffer)  # 创建订阅对象，将缓存传入
 
+        dhead_subscriber = rospy.Subscriber("/head_command", Float32MultiArray, self.dhead_info)
+        self.dhead_subscriber = dhead_subscriber
         self.start_subscriber()
+        self.setjoint = False
+        self.thread_setjoint = threading.Thread(target=self.set_dhead_moveit_joint)
+        self.thread_setjoint.start()
 
     def set_dhead_moveit_joint(self):
-        self.move_group.go(self.joint, wait=True)
-        self.move_group.stop()
+        while True:
+            if self.setjoint:
+                self.move_group.go(wait=True)
+                self.move_group.stop()
+                wpose = self.move_group.get_current_pose().pose
+                self.poseQueue.put(wpose)
+                print("set joint done")
+                #print(self.joint)
+                self.setjoint = False
 
     def get_dhead_moveit_pose(self):
         self.getPose = True
         while True:
             if not self.poseQueue.empty():
-                wpose = self.poseQueue.get_nowait()
+                wpose = self.poseQueue.get()
                 self.pose = wpose
                 # 相对关系(偏移量与四元数)
+                print(self.pose)
                 ts = TransformStamped()  # 组织被发布的数据
 
                 # header
@@ -120,35 +133,43 @@ class dhead_kinetic():
 
                 # child frame
                 ts.child_frame_id = "dhead"  # 子坐标系
-                ts.transform.translation.x = wpose[0]
-                ts.transform.translation.y = wpose[1]
-                ts.transform.translation.z = wpose[2]
 
-                ts.transform.rotation.x = wpose[3]  # 再设置四元数
-                ts.transform.rotation.y = wpose[4]
-                ts.transform.rotation.z = wpose[5]
-                ts.transform.rotation.w = wpose[6]
+                ts.transform.translation.x = wpose.position.x
+                ts.transform.translation.y = wpose.position.y
+                ts.transform.translation.z = wpose.position.z
 
+                ts.transform.rotation.x = wpose.orientation.x
+                ts.transform.rotation.y = wpose.orientation.y
+                ts.transform.rotation.z = wpose.orientation.z
+                ts.transform.rotation.w = wpose.orientation.w
                 # 发布数据
                 self.tfpub.sendTransform(ts)
                 break
-        return wpose
 
-    def dhead_info(self, data):
+    def dhead_info(self, Data):
+        data = Data.data
+        joint_goal = self.joint
+        r = data[5] if data[5] < 180 else data[5] - 360
+        p = data[3] if data[3] < 180 else data[3] - 360
+        y = data[4] if data[4] < 180 else data[4] - 360
+        fe = data[0]
+        z = data[1]/20000
+        lb = data[2]
+        joint_goal[0] = -fe*pi/180
+        joint_goal[1] = lb*pi/180
+        joint_goal[2] = z / 20
+        joint_goal[3] = y*pi/180
+        joint_goal[4] = -p*pi/180
+        joint_goal[5] = -r*pi/180
+        self.joint = joint_goal
+
+        #print(joint_goal)
         if self.getPose:
-            joint_goal = self.joint
-            joint_goal[0] = 0
-            joint_goal[1] = 0
-            joint_goal[2] = 0
-            joint_goal[3] = 0
-            joint_goal[4] = 0
-            joint_goal[5] = 0
-            self.joint = joint_goal
-            self.set_dhead_moveit_joint()
-            wpose = self.move_group.get_current_pose().pose
-            self.poseQueue.put_nowait(wpose)
+            #print("start set joint")
+            self.move_group.set_joint_value_target(self.joint)
+            self.setjoint = True
             self.getPose = False
-        print(type(data))
+        # print(data)
 
     def start_subscriber(self):
         self.thread_rosspin.start()
@@ -170,7 +191,7 @@ class dhead_kinetic():
                           ps_out.point.y,
                           ps_out.point.z,
                           ps_out.header.frame_id)
-            qtn = tf.transformations.quaternion_from_euler(0, 0, )
+            qtn = tf.transformations.quaternion_from_euler(0, 0, 1)
             opose = [ps_out.point.x,
                      ps_out.point.y,
                      ps_out.point.z,
@@ -186,9 +207,8 @@ class dhead_kinetic():
 
 def main():
     kinetic = dhead_kinetic()
-    kinetic.get_dhead_moveit_pose()
-    opose = kinetic.slove_object_pose([1, 2, 3])
-    print(opose)
+    while True:
+        kinetic.get_dhead_moveit_pose()
 
 
 if __name__ == "__main__":
