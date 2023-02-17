@@ -29,9 +29,7 @@
   <group if="$(eval arg('moveit_controller_manager') == 'fake')">
     <!-- We do not have a real robot connected, so publish fake joint states via a joint_state_publisher
          MoveIt's fake controller's joint states are considered via the 'source_list' parameter -->
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" unless="$(arg use_gui)">
-      <rosparam param="source_list">[move_group/fake_controller_joint_states]</rosparam>
-    </node>
+
     <!-- If desired, a GUI version is available allowing to move the simulated robot around manually
          This corresponds to moving around the real robot without the use of MoveIt. -->
     <node name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" if="$(arg use_gui)">
@@ -63,6 +61,15 @@
   <include file="$(dirname)/default_warehouse_db.launch" if="$(arg db)">
     <arg name="moveit_warehouse_database_path" value="$(arg db_path)"/>
   </include>
+  
+  <include file="$(find detachable_head)/launch/DEMO.launch">
+  </include>
+  
+  <include file="$(find dhead_kinetic)/launch/DEMO.launch">
+  </include>
+  
+
+  
 
 
 </launch>

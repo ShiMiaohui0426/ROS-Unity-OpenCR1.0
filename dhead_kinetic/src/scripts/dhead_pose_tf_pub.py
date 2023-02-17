@@ -44,6 +44,7 @@ class dhead_pose_tf_publisher():
         sub_thread = threading.Thread(target=rospy.spin)
         self.sub_trd = sub_thread
         self.sub_trd.start()
+        print('start calculate the pose of dhead')
 
 
     def send_pose_tf(self,data):

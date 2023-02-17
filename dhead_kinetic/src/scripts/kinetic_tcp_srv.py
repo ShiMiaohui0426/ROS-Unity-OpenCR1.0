@@ -7,7 +7,7 @@ import threading
 
 class kinect_tcp_server():
 
-    def __init__(self, host='192.168.1.4', port=8080):
+    def __init__(self, host='127.0.0.1', port=8080):
         self.host = host  # 主机IP
         self.port = port
         # 端口
@@ -49,7 +49,10 @@ class kinect_tcp_server():
             'orentation': {'x': pose[3], 'y': pose[4], 'z': pose[5], 'w': pose[6]}
         }
         str_json = json.dumps(data)
-        byte_json = str_json.encode()
+        self.send_json(str_json)
+
+    def send_json(self, json_data):
+        byte_json = json_data.encode()
         self.conn.send(byte_json)
 
     def empty_input(self):

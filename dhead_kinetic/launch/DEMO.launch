@@ -16,6 +16,8 @@ limitations under the License.
 
 <launch>
 	
-	<node name="joint_catcher" pkg="dhead_kinetic" type="joint_states_publisher.py"/>
+	<node name="dhead_joint_states_publisher" pkg="dhead_kinetic" type="dhead_joint_states_publisher.py" output="screen"/>
+	<node name="dhead_pose_tf_publisher" pkg="dhead_kinetic" type="dhead_pose_tf_pub.py" output="screen"/>
+	<node name="kinetic_solver" pkg="dhead_kinetic" type="kinetic_solver.py" output="screen"/>
 
 </launch>
