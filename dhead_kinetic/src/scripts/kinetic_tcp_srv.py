@@ -4,34 +4,40 @@ import queue
 import json
 import threading
 
-
+myhost = socket.gethostbyname(socket.gethostname())
 class kinect_tcp_server():
 
-    def __init__(self, host='127.0.0.1', port=8080):
+    def __init__(self, host=myhost, port=8080):
         self.host = host  # 主机IP
         self.port = port
         # 端口
-        self.web = socket.socket()  # 创建TCP/IP套接字
+        self.web = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # 创建TCP/IP套接字
         self.web.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.web.bind((self.host, self.port))  # 绑定端口
         self.web.listen(5)  # 设置最多连接数
         self.inputData = queue.Queue(1024)
+        self.sendData= queue.Queue(1024)
         self.running = False
         print("srv start")
 
     def catch_data(self):
         while self.running:
             data = self.conn.recv(1024 * 10).decode()  # 获取客户端请求的数据
-            data_json = json.loads(data)
-            self.inputData.put_nowait(data_json)
+            if data:
+                data_json = json.loads(data)
+                self.inputData.put(data_json)
             # print(data_json)  # 打印出接收到的数据
 
     def wait_connect(self):
+        print('wait connect')
         while True:
             self.conn, self.addr = self.web.accept()  # 建立客户端连接
-            self.t = threading.Thread(target=self.catch_data)
+            data = {'hello': True}
+            str_json = json.dumps(data)
+            self.send_json(str_json)
+            self.receive_thread = threading.Thread(target=self.catch_data)
             self.running = True
-            self.t.start()
+            self.receive_thread.start()
             break
         print("get connected with ：")
         print(self.addr)
@@ -59,7 +65,7 @@ class kinect_tcp_server():
         return self.inputData.empty()
 
     def get_data(self):
-        return self.inputData.get_nowait()
+        return self.inputData.get()
 
 
 if __name__ == "__main__":
@@ -73,5 +79,5 @@ if __name__ == "__main__":
 
     #    # 向客户端发送数据
     # conn.sendall(b'HTTP/1.1 200 OK\r\n\r\nHello World')
-    srv.send_joints([1, 2, 3, 4, 5, 6, 7])
+    #srv.send_joints([1, 2, 3, 4, 5, 6, 7])
     srv.close_connect()

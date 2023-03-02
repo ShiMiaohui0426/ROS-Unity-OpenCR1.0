@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 import time
 
-start = time.time()
-
 
 class fake_robot:
     def __init__(self):
         self.start = None
         self.busy = False
+        self.start = 0
 
-    def start_grasp(self,pos):
-        self.start = time.time()
+    def start_grasp(self, pos):
         self.busy = True
-        print('grasp at',pos)
+        self.start = time.time()
+        print('grasp at', pos)
 
     def is_busy(self):
-        if (time.time() - 5) > start:
-            self.busy = False
+        self.busy = not ((time.time() - self.start) > 5)
+        print((time.time() - self.start))
+        return self.busy

@@ -7,15 +7,17 @@ from fake_robot import fake_robot
 robot = fake_robot()
 
 
-class state_machine:
+class kinetic_server:
     def __init__(self):
-        self.jdata = None
         self.data = None
         self.case = {
             'wait_connect': self.wait_connect,
-            'wait_command': self.wait_command,
+            'response': self.response,
+        }
+
+        self.serves = {
             'start_grasp': self.start_grasp,
-            'wait_grasp_done': self.wait_grasp_done
+            'query_grasp_done': self.query_grasp_done,
         }
         self.srv = kinect_tcp_server()
         self.state = 0
@@ -28,37 +30,46 @@ class state_machine:
 
     def wait_connect(self):
         self.srv.wait_connect()
-        self.state = 'wait_command'
+        self.state = 'response'
 
-    def wait_command(self):
+    def response(self):
         try:
             if not self.srv.empty_input():
                 self.data = self.srv.get_data()
-                self.jdata = json.loads(self.data)
-                self.state = self.data['command']
-        except:
-            self.srv.close_connect()
+                method = self.serves.get(self.data['command'])
+                if method:
+                    print('response to ', self.data['command'])
+                    method()
+
+                else:
+                    print('receive: ', self.data)
+
+
+        except Exception as message:
+            print('error: %s' % message)
             print('Kinetic closed unexpectedly')
 
     def start_grasp(self):
-        position = self.jdata['position']
-        pos = self.tfsb.slove_object_pose(position['x'], position['y'], position['z'])
+        print('start grasp')
+        position = self.data['position']
+        print(position)
+        pos = self.tfsb.slove_object_pose([position['x'], position['y'], position['z']])
         robot.start_grasp(pos)
-        self.state = 'wait_grasp_done'
 
-    def wait_grasp_done(self):
+    def query_grasp_done(self):
         if not robot.is_busy():
-            self.state = 'wait_command'
-        data = {
-            'command': 'grasp_done'
-        }
-        str_json = json.dumps(data)
-        self.srv.send_json(str_json)
+            data = {'command': 'grasp_done'}
+            str_json = json.dumps(data)
+            self.srv.send_json(str_json)
+            print('grasp_done')
+        else:
+            print('robot busy')
 
 
 def main():
     print('start kinctic solver')
-    m_state_machine = state_machine()
+    m_state_machine = kinetic_server()
+    m_state_machine.wait_connect()
     while True:
         m_state_machine.switch_auto()
 
