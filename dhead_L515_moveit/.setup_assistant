@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: DtachableHead_L515_urdf
+    relative_path: urdf/DtachableHead_L515_urdf.urdf
+    xacro_args: ""
+  SRDF:
+    relative_path: config/DtachableHead_L515_urdf.srdf
+  CONFIG:
+    author_name: Shi Miaohui
+    author_email: 1013899875@qq.com
+    generated_timestamp: 1679121321

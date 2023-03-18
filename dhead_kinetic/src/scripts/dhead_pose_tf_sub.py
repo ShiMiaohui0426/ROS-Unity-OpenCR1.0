@@ -5,6 +5,7 @@ import rospy
 import threading
 from tf2_geometry_msgs import tf2_geometry_msgs
 
+
 class dhead_pose_tf_Subscriber():
     def __init__(self):
         super(dhead_pose_tf_Subscriber, self).__init__()
@@ -33,6 +34,10 @@ class dhead_pose_tf_Subscriber():
                           ps_out.point.y,
                           ps_out.point.z,
                           ps_out.header.frame_id)
+            with open('/root/Desktop/ROS-Unity-OpenCR1.0/dhead_kinetic/src/scripts/data.txt', 'a') as f:
+                text = str(ps_out.point.x) + ',' + str(ps_out.point.y) + ',' + str(ps_out.point.z) + '\n\r'
+                f.write(text)
+
             qtn = tf.transformations.quaternion_from_euler(0, 0, 1)
             opose = [ps_out.point.x,
                      ps_out.point.y,
@@ -45,4 +50,3 @@ class dhead_pose_tf_Subscriber():
             return opose
         except Exception as e:
             rospy.loginfo("错误提示：%s", e)
-

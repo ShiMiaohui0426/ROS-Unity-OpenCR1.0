@@ -5,6 +5,8 @@ import json
 import threading
 
 myhost = socket.gethostbyname(socket.gethostname())
+
+
 class kinect_tcp_server():
 
     def __init__(self, host=myhost, port=8080):
@@ -16,17 +18,21 @@ class kinect_tcp_server():
         self.web.bind((self.host, self.port))  # 绑定端口
         self.web.listen(5)  # 设置最多连接数
         self.inputData = queue.Queue(1024)
-        self.sendData= queue.Queue(1024)
+        self.sendData = queue.Queue(1024)
         self.running = False
         print("srv start")
 
     def catch_data(self):
         while self.running:
-            data = self.conn.recv(1024 * 10).decode()  # 获取客户端请求的数据
-            if data:
-                data_json = json.loads(data)
-                self.inputData.put(data_json)
-            # print(data_json)  # 打印出接收到的数据
+            try:
+                data = self.conn.recv(1024 * 10).decode()  # 获取客户端请求的数据
+                if data:
+                    data_json = json.loads(data)
+                    self.inputData.put(data_json)
+            except Exception as message:
+                print('消息接受失败%s' % message)
+
+        # print(data_json)  # 打印出接收到的数据
 
     def wait_connect(self):
         print('wait connect')
@@ -79,5 +85,5 @@ if __name__ == "__main__":
 
     #    # 向客户端发送数据
     # conn.sendall(b'HTTP/1.1 200 OK\r\n\r\nHello World')
-    #srv.send_joints([1, 2, 3, 4, 5, 6, 7])
+    # srv.send_joints([1, 2, 3, 4, 5, 6, 7])
     srv.close_connect()

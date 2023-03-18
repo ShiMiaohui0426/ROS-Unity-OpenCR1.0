@@ -14,6 +14,6 @@ class fake_robot:
         print('grasp at', pos)
 
     def is_busy(self):
-        self.busy = not ((time.time() - self.start) > 5)
+        self.busy = not ((time.time() - self.start) > 1)
         print((time.time() - self.start))
         return self.busy
