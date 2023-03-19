@@ -43,7 +43,7 @@ class joint_catcher():
         joint_goal = [0, 1, 2, 3, 4, 5]
         joint_goal[0] = fe * pi / 180
         joint_goal[1] = lb * pi / 180
-        joint_goal[2] = z / 20
+        joint_goal[2] = 0*z / 20
         joint_goal[3] = y * pi / 180
         joint_goal[4] = -p * pi / 180
         joint_goal[5] = -r * pi / 180

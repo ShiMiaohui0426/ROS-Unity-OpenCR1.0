@@ -10,12 +10,14 @@ robot = fake_robot()
 class kinetic_server:
     def __init__(self):
         self.data = None
+        self.target=None
         self.case = {
             'wait_connect': self.wait_connect,
             'response': self.response,
         }
 
         self.serves = {
+            'set_grasp_target':self.set_grasp_target,
             'start_grasp': self.start_grasp,
             'query_grasp_done': self.query_grasp_done,
         }
@@ -49,12 +51,14 @@ class kinetic_server:
             print('error: %s' % message)
             print('Kinetic closed unexpectedly')
 
+    def set_grasp_target(self):
+        cam_target=self.data['position']
+        pos = self.tfsb.slove_object_pose([cam_target['x'], cam_target['y'], cam_target['z']])
+        self.target=pos
+
     def start_grasp(self):
         print('start grasp')
-        position = self.data['position']
-        print(position)
-        pos = self.tfsb.slove_object_pose([position['x'], position['y'], position['z']])
-        robot.start_grasp(pos)
+        robot.start_grasp(self.target)
 
     def query_grasp_done(self):
         if not robot.is_busy():
