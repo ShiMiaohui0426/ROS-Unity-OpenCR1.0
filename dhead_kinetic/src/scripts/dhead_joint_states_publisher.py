@@ -39,7 +39,7 @@ class joint_catcher():
         y = data[4] if data[4] < 180 else data[4] - 360
         fe = data[0]
         z = data[1] / 20000
-        lb = data[2]
+        lb = data[2]+4
         joint_goal = [0, 1, 2, 3, 4, 5]
         joint_goal[0] = fe * pi / 180
         joint_goal[1] = lb * pi / 180
