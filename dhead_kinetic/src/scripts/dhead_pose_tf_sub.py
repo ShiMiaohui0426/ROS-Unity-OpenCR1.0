@@ -23,7 +23,7 @@ class dhead_pose_tf_Subscriber():
         ps.header.frame_id = "dhead"  # 参考坐标系
         ps.point.x = object_pose[0]  # 相机坐标点
         ps.point.y = object_pose[1]
-        ps.point.z = object_pose[2]
+        ps.point.z = -object_pose[2]
         try:
             # 转换实现
             ps_out = self.tfbuffer.transform(ps, "base_link")
