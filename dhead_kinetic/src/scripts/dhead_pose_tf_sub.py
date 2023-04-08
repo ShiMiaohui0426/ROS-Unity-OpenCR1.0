@@ -41,11 +41,7 @@ class dhead_pose_tf_Subscriber():
             qtn = tf.transformations.quaternion_from_euler(0, 0, 1)
             opose = [ps_out.point.x,
                      ps_out.point.y,
-                     ps_out.point.z,
-                     qtn[0],
-                     qtn[1],
-                     qtn[2],
-                     qtn[3]]
+                     ps_out.point.z]
 
             return opose
         except Exception as e:
