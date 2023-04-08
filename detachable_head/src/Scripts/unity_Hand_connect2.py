@@ -4,6 +4,7 @@ import time, random, subprocess, rospy, os, threading
 from tkinter import FALSE, Y
 from xmlrpc.client import Boolean, boolean
 from pymycobot.mycobot import MyCobot
+#from pymycobot import MyCobotSocket
 # from pythonAPI.mycobot3 import MyCobot as MyCobot3
 from pymycobot.genre import Angle, Coord
 from std_msgs.msg import Float32MultiArray, Bool, Int16
@@ -52,11 +53,11 @@ def callback(array):
     #rotz = mycobot.get_angles()
     #coord_list = [50, -100, 300,rotx,0,0] #x,y,z correct
     if array.data[4] ==1:
-        
+        k=1
         #coord_list = [x, z, y,-170,0,-180] #x,y,z correct
         #coord_list = [x, z, y,-180,0,-180] #x,y,z correct
-        coord_list = [x, z, 280,0,0,0] #x,y,z correct
-        #rospy.loginfo('Received:' + str(coord_list))
+        coord_list = [x*k, z*k, 280,0,0,0] #x,y,z correct
+        rospy.loginfo('Received:' + str(coord_list))
         mycobot.send_coords(coord_list, 80, 1)
         #mycobot.sync_send_coords(coord_list,80,1,7)
         
@@ -150,9 +151,10 @@ def grabat(X,Z):
 
 def init_mycobot():
     global mycobot
-    port = '/dev/Mycobot'
+    port = '/dev/ttyACM1'
     #mycobot = MyCobot('/dev/ttyUSB0')
     mycobot = MyCobot(port)
+    #mycobot = MyCobotSocket("192.168.1.5", 9000)
  
     mycobot.set_color(255, 255, 255)
     time.sleep(2)
@@ -212,11 +214,11 @@ if __name__ == '__main__':
     rospy.init_node('hand_node')
     rospy.loginfo('initialized arm node')
     reset = [0, 0, 0, 0, 0, 0]
-    t1= threading.Thread(target=thread_check_connection, name = 't1')
-    checkConnection()
+    #t1= threading.Thread(target=thread_check_connection, name = 't1')
+    #checkConnection()
     init_mycobot()
     initialize_gripper()
-    t1.start() # start checking serial thread
+    #t1.start() # start checking serial thread
     mycobot_listenner() 
     t_flag = True # execute when leave the program
     mycobot.send_angles(reset, 30)
