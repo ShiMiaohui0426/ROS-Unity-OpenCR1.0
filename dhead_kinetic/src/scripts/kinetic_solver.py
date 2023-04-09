@@ -8,7 +8,6 @@ robot = fake_robot()
 
 import numpy as np
 
-
 def med_filter(data, n):
     N = len(data)
     m = int((n - 1) / 2)
@@ -70,8 +69,10 @@ class kinetic_server:
             print('Kinetic closed unexpectedly')
 
     def set_grasp_target(self):
-        cam_target = self.data['position']
-        pos = self.tfsb.slove_object_pose([cam_target['x'], cam_target['y'], cam_target['z']])
+        cam_position = self.data['position']
+        cam_orientation = self.data['orientation']
+
+        pos = self.tfsb.slove_object_pose([cam_position['x'], cam_position['y'], cam_position['z'],cam_orientation['x'], cam_orientation['y'], cam_orientation['z'], cam_orientation['w']])
         if pos:
             self.target_list.append(pos)
 
@@ -79,20 +80,28 @@ class kinetic_server:
         self.target_list = []
 
     def start_grasp(self):
-        x_list = []
-        y_list = []
-        z_list = []
+        position_x_list = []
+        position_y_list = []
+        position_z_list = []
+        euler_r_list = []
+        euler_p_list = []
+        euler_y_list = []
         print('calaulate point')
         for i in self.target_list:
-            x_list.append(i[0])
-            y_list.append(i[1])
-            z_list.append(i[2])
-        print('calaulate point1')
-        x_list = med_filter(x_list, 7)
-        y_list = med_filter(y_list, 7)
-        z_list = med_filter(z_list, 7)
+            position_x_list.append(i[0])
+            position_y_list.append(i[1])
+            position_z_list.append(i[2])
+            euler_r_list.append(i[3])
+            euler_p_list.append(i[4])
+            euler_y_list.append(i[5])
+        position_x_list = med_filter(position_x_list, 7)
+        position_y_list = med_filter(position_y_list, 7)
+        position_z_list = med_filter(position_z_list, 7)
+        euler_r_list = med_filter(euler_r_list, 7)
+        euler_p_list = med_filter(euler_p_list, 7)
+        euler_y_list = med_filter(euler_y_list, 7)
         print('calaulate point done')
-        pos = [np.mean(x_list), np.mean(y_list), np.mean(z_list)]
+        pos = [np.mean(position_x_list), np.mean(position_y_list), np.mean(position_z_list), np.mean(euler_r_list), np.mean(euler_p_list), np.mean(euler_y_list)]
         print('start grasp')
         self.target = pos
         robot.start_grasp(self.target)

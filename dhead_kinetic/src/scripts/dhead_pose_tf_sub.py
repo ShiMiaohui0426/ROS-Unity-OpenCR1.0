@@ -5,6 +5,20 @@ import rospy
 import threading
 from tf2_geometry_msgs import tf2_geometry_msgs
 
+#四元数转角度欧拉角
+def quaternion_to_euler(x, y, z, w):
+    ysqr = y * y
+    t0 = -2.0 * (ysqr + z * z) + 1.0
+    t1 = +2.0 * (x * y + w * z)
+    t2 = -2.0 * (x * z - w * y)
+    t3 = +2.0 * (y * z + w * x)
+    t4 = -2.0 * (x * x + ysqr) + 1.0
+    t2 = 1 if t2 > 1 else t2
+    t2 = -1 if t2 < -1 else t2
+    roll = math.atan2(t3, t4)
+    pitch = math.asin(t2)
+    yaw = math.atan2(t1, t0)
+    return [roll, pitch, yaw]
 
 class dhead_pose_tf_Subscriber():
     def __init__(self):
@@ -18,30 +32,39 @@ class dhead_pose_tf_Subscriber():
         self.sub_trd.start()
 
     def slove_object_pose(self, object_pose):
-        ps = tf2_geometry_msgs.PointStamped()  # 组织被转换的坐标点
+        ps = tf2_geometry_msgs.PoseStamped()  # 组织被转换的坐标点
         ps.header.stamp = rospy.Time.now()  # 时间戳
         ps.header.frame_id = "dhead"  # 参考坐标系
-        ps.point.x = object_pose[0]  # 相机坐标点
-        ps.point.y = -object_pose[1]
-        ps.point.z = -object_pose[2]
+        ps.pose.position.x = object_pose[0]
+        ps.pose.position.y = -object_pose[1]
+        ps.pose.position.z = -object_pose[2]
+        ps.pose.orientation.x = object_pose[3]
+        ps.pose.orientation.y = object_pose[4]
+        ps.pose.orientation.z = object_pose[5]
+        ps.pose.orientation.w = object_pose[6]
+
         try:
             # 转换实现
             ps_out = self.tfbuffer.transform(ps, "base_link")
+            rpy=quaternion_to_euler(ps_out.pose.orientation.x,ps_out.pose.orientation.y,ps_out.pose.orientation.z,ps_out.pose.orientation.w)
 
             # 输出结果
-            rospy.loginfo("转换后的坐标：(%.2f, %.2f, %.2f), 参考的坐标系：%s",
-                          ps_out.point.x,
-                          ps_out.point.y,
-                          ps_out.point.z,
+            rospy.loginfo("转换后的坐标：(%.2f, %.2f, %.2f, %2f), 参考的坐标系：%s",
+                          ps_out.point.position.x,
+                          ps_out.point.position.y,
+                          ps_out.point.position.z,
+                          rpy[2],
                           ps_out.header.frame_id)
             with open('/root/Desktop/ROS-Unity-OpenCR1.0/dhead_kinetic/src/scripts/data.txt', 'a') as f:
-                text = str(ps_out.point.x) + ',' + str(ps_out.point.y) + ',' + str(ps_out.point.z) + '\n\r'
+                text = str(ps_out.point.x) + ',' + str(ps_out.point.y) + ',' + str(ps_out.point.z) + ',' + str(rpy[2])+'\n\r'
                 f.write(text)
 
-            qtn = tf.transformations.quaternion_from_euler(0, 0, 1)
             opose = [ps_out.point.x,
                      ps_out.point.y,
-                     ps_out.point.z]
+                     ps_out.point.z,
+                     rpy[0],
+                     rpy[1],
+                     rpy[2]]
 
             return opose
         except Exception as e:

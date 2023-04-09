@@ -3,7 +3,17 @@ import time
 from pymycobot.mycobot import MyCobot
 from pymycobot import MyCobotSocket
 import threading
+import math
 
+
+
+#旋转矩阵转四元数
+def rotation_matrix_to_quaternion(matrix):
+    qw = math.sqrt(1 + matrix[0][0] + matrix[1][1] + matrix[2][2]) / 2
+    qx = (matrix[2][1] - matrix[1][2]) / (4 * qw)
+    qy = (matrix[0][2] - matrix[2][0]) / (4 * qw)
+    qz = (matrix[1][0] - matrix[0][1]) / (4 * qw)
+    return [qx, qy, qz, qw]
 
 def wait_moving(robot):
     # time.sleep(1)
