@@ -9,7 +9,7 @@ def wait_moving(robot):
 
 
 # mc = MyCobot("/dev/ttyACM1", 115200)
-mc = MyCobotSocket("192.168.1.5", 9000)
+mc = MyCobotSocket("192.168.1.3", 9000)
 mc.send_angles([0, 0, 0, 0, 0, 0], 50)
 wait_moving(mc)
 mc.send_angles([-90, -30, -45, -15, 0, 0], 50)

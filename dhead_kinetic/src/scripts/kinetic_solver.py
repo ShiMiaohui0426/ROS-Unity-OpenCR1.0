@@ -8,6 +8,7 @@ robot = fake_robot()
 
 import numpy as np
 
+
 def med_filter(data, n):
     N = len(data)
     m = int((n - 1) / 2)
@@ -72,7 +73,9 @@ class kinetic_server:
         cam_position = self.data['position']
         cam_orientation = self.data['orientation']
 
-        pos = self.tfsb.slove_object_pose([cam_position['x'], cam_position['y'], cam_position['z'],cam_orientation['x'], cam_orientation['y'], cam_orientation['z'], cam_orientation['w']])
+        pos = self.tfsb.slove_object_pose(
+            [cam_position['x'], cam_position['y'], cam_position['z'], cam_orientation['x'], cam_orientation['y'],
+             cam_orientation['z'], cam_orientation['w']])
         if pos:
             self.target_list.append(pos)
 
@@ -101,7 +104,8 @@ class kinetic_server:
         euler_p_list = med_filter(euler_p_list, 7)
         euler_y_list = med_filter(euler_y_list, 7)
         print('calaulate point done')
-        pos = [np.mean(position_x_list), np.mean(position_y_list), np.mean(position_z_list), np.mean(euler_r_list), np.mean(euler_p_list), np.mean(euler_y_list)]
+        pos = [np.mean(position_x_list), np.mean(position_y_list), np.mean(position_z_list), np.mean(euler_r_list),
+               np.mean(euler_p_list), np.mean(euler_y_list)]
         print('start grasp')
         self.target = pos
         robot.start_grasp(self.target)
