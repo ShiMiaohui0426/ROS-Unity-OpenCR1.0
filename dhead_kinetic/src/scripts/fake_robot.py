@@ -32,10 +32,16 @@ class fake_robot:
 
     def start_grasp(self, pos):
         self.target = [pos[0] * 1000 - 475, pos[1] * 1000 - 125, 165, pos[5] * 180 / 3.1415926]
+        self.target[3] = self.target[3] - 90
         if self.target[2] < 160:
             self.target[2] = 165
+        if self.target[3] < -180:
+            self.target[3] = self.target[3] + 360
+        if self.target[3] > 180:
+            self.target[3] = self.target[3] - 360
         if 0 < self.target[3] < 90:
             self.target[3] -= 180
+
         '''
         if self.target[3] > 0:
             self.target[3] = self.target[3] - 180
@@ -91,6 +97,11 @@ class fake_robot:
                 coords[1] = self.target[1]
                 coords[2] = coords[2] - 50
                 # self.GripperMoveTo(coords)
+                self.mc.send_coords(coords, 80, 0)
+                wait_moving(self.mc)
+                coords[3] = -179
+                coords[4] = -1
+                coords[5] = a
                 self.mc.send_coords(coords, 80, 0)
                 wait_moving(self.mc)
                 m_target = [self.target[0], self.target[1], self.target[2], -179, -1, a]
