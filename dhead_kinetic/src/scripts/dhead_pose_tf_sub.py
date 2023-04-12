@@ -4,6 +4,7 @@ import tf
 import rospy
 import threading
 from tf2_geometry_msgs import tf2_geometry_msgs
+import math
 
 #四元数转角度欧拉角
 def quaternion_to_euler(x, y, z, w):
@@ -50,21 +51,21 @@ class dhead_pose_tf_Subscriber():
 
             # 输出结果
             rospy.loginfo("转换后的坐标：(%.2f, %.2f, %.2f, %2f), 参考的坐标系：%s",
-                          ps_out.point.position.x,
-                          ps_out.point.position.y,
-                          ps_out.point.position.z,
-                          rpy[2],
+                          ps_out.pose.position.x,
+                          ps_out.pose.position.y,
+                          ps_out.pose.position.z,
+                          -rpy[2]*180/3.1415926,
                           ps_out.header.frame_id)
             with open('/root/Desktop/ROS-Unity-OpenCR1.0/dhead_kinetic/src/scripts/data.txt', 'a') as f:
-                text = str(ps_out.point.x) + ',' + str(ps_out.point.y) + ',' + str(ps_out.point.z) + ',' + str(rpy[2])+'\n\r'
+                text = str(ps_out.pose.position.x) + ',' + str(ps_out.pose.position.y) + ',' + str(ps_out.pose.position.z) + ',' + str(rpy[2])+'\n\r'
                 f.write(text)
 
-            opose = [ps_out.point.x,
-                     ps_out.point.y,
-                     ps_out.point.z,
+            opose = [ps_out.pose.position.x,
+                     ps_out.pose.position.y,
+                     ps_out.pose.position.z,
                      rpy[0],
                      rpy[1],
-                     rpy[2]]
+                     -rpy[2]]
 
             return opose
         except Exception as e:

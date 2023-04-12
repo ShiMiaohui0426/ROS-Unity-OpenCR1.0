@@ -6,14 +6,8 @@ import threading
 import math
 
 
+# 旋转矩阵转四元数
 
-#旋转矩阵转四元数
-def rotation_matrix_to_quaternion(matrix):
-    qw = math.sqrt(1 + matrix[0][0] + matrix[1][1] + matrix[2][2]) / 2
-    qx = (matrix[2][1] - matrix[1][2]) / (4 * qw)
-    qy = (matrix[0][2] - matrix[2][0]) / (4 * qw)
-    qz = (matrix[1][0] - matrix[0][1]) / (4 * qw)
-    return [qx, qy, qz, qw]
 
 def wait_moving(robot):
     # time.sleep(1)
@@ -37,9 +31,23 @@ class fake_robot:
         self.grasp_thread.start()
 
     def start_grasp(self, pos):
-        self.target = [pos[0] * 1000 - 475, pos[1] * 1000 - 125, pos[2] * 1000]
+        self.target = [pos[0] * 1000 - 475, pos[1] * 1000 - 125, 165, pos[5] * 180 / 3.1415926]
+        self.target[3] = self.target[3] - 90
         if self.target[2] < 160:
             self.target[2] = 165
+        if self.target[3] < -180:
+            self.target[3] = self.target[3] + 360
+        if self.target[3] > 180:
+            self.target[3] = self.target[3] - 360
+        if 0 < self.target[3] < 90:
+            self.target[3] -= 180
+
+        '''
+        if self.target[3] > 0:
+            self.target[3] = self.target[3] - 180
+        if self.target[3] < -180:
+            self.target[3] = self.target[3] + 180
+        '''
         self.busy = True
         print('grasp at', self.target)
 
@@ -48,7 +56,7 @@ class fake_robot:
         time.sleep(2)
 
     def GripperRelease(self):
-        self.mc.set_encoder(7, 2000)
+        self.mc.set_encoder(7, 2200)
         time.sleep(2)
 
     def GripperMoveToDestination(self):
@@ -59,42 +67,65 @@ class fake_robot:
         self.mc.send_angles([0, 0, 0, 0, 0, 0], 80)
         wait_moving(self.mc)
 
-    def GripperMoveTo(self, tar):
-        self.mc.send_coords(tar, speed, 0)
+    def GripperMoveTo(self, tar, type=0):
+        self.mc.send_coords(tar, speed, type)
         wait_moving(self.mc)
 
     def grasp_thread_task(self):
         while True:
             if self.busy:
-                self.GripperMoveToOrigin()
-                m_target = [self.target[0], self.target[1], self.target[2], -179, -1, -179]
-                topoftarget = [self.target[0], self.target[1], self.target[2] + 120, -179, -1, -179]
-                self.GripperMoveTo(topoftarget)
+                self.mc.send_angles([0, 0, 0, 0, 0, 0], 80)
+                wait_moving(self.mc)
+                a = self.target[3] - 90
+                if a > 0:
+                    a = a - 180
+                if a < -180:
+                    a = a + 180
+                if a < -90:
+                    a = a + 180
 
-                topoftarget = [self.target[0], self.target[1], self.target[2] + 110, -179, -1,
-                               -179 - 10]
-                self.GripperMoveTo(topoftarget)
-                topoftarget = [self.target[0], self.target[1], self.target[2] + 100, -179, -1,
-                               -179 + 10]
-                self.GripperMoveTo(topoftarget)
+                print('grasp init at')
+                print([a, -30, 0, 0, 0, 0])
+                self.mc.send_angles([a, -30, 0, 0, 0, 0], 80)
+                a = a - 90
+
+                if a < -180:
+                    a = a + 360
+                wait_moving(self.mc)
+                coords = self.mc.get_coords()
+                coords[0] = self.target[0]
+                coords[1] = self.target[1]
+                coords[2] = coords[2] - 50
+                # self.GripperMoveTo(coords)
+                self.mc.send_coords(coords, 80, 0)
+                wait_moving(self.mc)
+                coords[3] = -179
+                coords[4] = -1
+                coords[5] = a
+                self.mc.send_coords(coords, 80, 0)
+                wait_moving(self.mc)
+                m_target = [self.target[0], self.target[1], self.target[2], -179, -1, a]
+                topoftarget = [self.target[0], self.target[1], self.target[2] + 120, -179, -1, a]
+                print('move to the top of target')
+                self.GripperMoveTo(topoftarget, 1)
+                '''
                 for i in range(1, 3):
                     topoftarget = [self.target[0], self.target[1], self.target[2] + 100 - 50 * i, -179, -1,
-                                   -179]
+                                   self.target[3]]
                     self.GripperMoveTo(topoftarget)
                     topoftarget = [self.target[0], self.target[1], self.target[2] + 100 - 50 * i, -179, -1,
-                                   -179 - 10*i]
+                                   self.target[3] - 10 * i]
                     self.GripperMoveTo(topoftarget)
                     topoftarget = [self.target[0], self.target[1], self.target[2] + 100 - 50 * i, -179, -1,
-                                   -179 + 10*i]
+                                   self.target[3] + 10 * i]
                     self.GripperMoveTo(topoftarget)
-
-                print('move to the top of target')
-                self.GripperMoveTo(topoftarget)
-                topoftarget = [self.target[0], self.target[1], self.target[2] + 50, -179, -1, -179]
+'''
                 print('move to the target')
-                self.GripperMoveTo(m_target)
+                self.GripperMoveTo(m_target, 1)
                 print('pick the target')
                 self.GripperCatch()
+
+                topoftarget = [self.target[0], self.target[1], self.target[2] + 50, -179, -1, a]
                 self.GripperMoveTo(topoftarget)
 
                 print('move to the Destination')
