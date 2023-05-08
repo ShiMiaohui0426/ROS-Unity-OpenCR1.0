@@ -31,8 +31,8 @@ class fake_robot:
         self.grasp_thread.start()
 
     def start_grasp(self, pos):
-        self.target = [pos[0] * 1000 - 475, pos[1] * 1000 - 125, 165, pos[5] * 180 / 3.1415926]
-        self.target[3] = self.target[3] - 90
+        self.target = [pos[0] * 1000 - 475, pos[1] * 1000 -125, 165, pos[5] * 180 / 3.1415926]
+        self.target[3] = self.target[3]
         if self.target[2] < 160:
             self.target[2] = 165
         if self.target[3] < -180:

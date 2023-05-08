@@ -25,7 +25,7 @@ limitations under the License.
 
 	<node name="file_server" pkg="file_server" type="file_server" output="screen" />
 	<node name="serial_node1" pkg="rosserial_python" type="serial_node.py" output="screen">
-		<param name="port" value ="/dev/ttyACM1"/>
+		<param name="port" value ="/dev/ttyACM0"/>
 		<param name="baud" value ="115200"/>
 	</node>
 

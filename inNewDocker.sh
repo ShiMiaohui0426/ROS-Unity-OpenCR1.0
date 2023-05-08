@@ -20,4 +20,4 @@ sudo ln -s /root/Desktop/catkin_ws/ /root/catkin_ws
 cd /root/Desktop/catkin_ws/
 catkin_make
 catkin_make install
-
+pip install pymycobot
